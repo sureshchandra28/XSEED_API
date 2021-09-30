@@ -1,0 +1,1163 @@
+{
+	"info": {
+		"_postman_id": "716c8d17-5a4d-42d5-b0fd-cb82e084bb95",
+		"name": "Create Multiple Block Project Lesson Plan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login Library",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator1@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login CES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"cesToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lib",
+			"item": [
+				{
+					"name": "Get Subject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var subjectList = pm.response.json().data.subjects\r",
+									"for(i = 0; i < subjectList.length; i++) {\r",
+									"    if (subjectList[i].name == \"English\") {\r",
+									"        pm.environment.set(\"subjectID\", subjectList[i].id)\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  subjects{\r\n        id\r\n        name\r\n    }\r\n}\r\n\r\n  \r\n\r\n  ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// var boardList = pm.response.json().data.boards\r",
+									"// for(i = 0; i < boardList.length; i++) {\r",
+									"//     if (boardList[i].name == \"XSEED One India\") {\r",
+									"//         pm.environment.set(\"boardID\", boardList[i].id)\r",
+									"//         pm.environment.set(\"boardName\", boardList[i].name)\r",
+									"//     }\r",
+									"// }\r",
+									"// pm.test(\"verify 200 status code\",()=>{\r",
+									"//     pm.response.to.be.ok;\r",
+									"//     pm.expect(pm.response.code).to.eql(200);\r",
+									"// });\r",
+									" pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
+									" pm.environment.set(\"boardID\", \"74\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  boards{\r\n        id\r\n        name\r\n    }\r\n}\r\n\r\n  ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var productList = pm.response.json().data.products\r",
+									"for(i = 0; i < productList.length; i++) {\r",
+									"    if (productList[i].name == \"XSEED One\") {\r",
+									"        pm.environment.set(\"productID\", productList[i].id)    \r",
+									"    }\r",
+									"}\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  products{\r\n        id\r\n        name\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Standard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var standardList = pm.response.json().data.standards\r",
+									"for(i = 0; i < standardList.length; i++) {\r",
+									"    if (standardList[i].name == \"1\") {\r",
+									"        pm.environment.set(\"standardID\", standardList[i].id)    \r",
+									"    }\r",
+									"}\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  standards{\r\n        id\r\n        name\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create 1st Block",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"firstBlockId\",jsonData.data.createBlock.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"firstBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"firstBId\",\"TTCBEN\"+Date.now());\r",
+									"pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
+									"//pm.environment.set(\"boardID\", \"74\");\r",
+									"pm.environment.set(\"blockMapId\",298);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{firstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create 2nd Block",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"secondBlockId\",jsonData.data.createBlock.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"secondBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"secondBId\",\"TTCBEN\"+Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{secondBlockTitle}}\", type: \"standalone\", bId: \"{{secondBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create An IA Lesson Plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"var id=jsonData.data.createLessonPlan.id;\r",
+									"postman.setEnvironmentVariable(\"createdLpIdForIA\", id);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Created IA Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.createLessonPlan.name).to.eql(pm.environment.get(\"firstLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson IA Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.createLessonPlan.type).to.eql(\"information_and_assessment\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"firstLpName\", \"MultipleLpIATestAuto_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"firstDesc\",\"MultipleLpIADescription_\"+Date.now());\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nmutation {\r\n  createLessonPlan(lessonPlan: {name: \"{{firstLpName}}\", description: \"{{firstDesc}}\", type: \"information_and_assessment\"}) {\r\n    id\r\n    name\r\n    description\r\n    type\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create A Standard Lesson Plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdLpIdForStand\", jsonData.data.createLessonPlan.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Created Standard Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.createLessonPlan.name).to.eql(pm.environment.get(\"secondLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Standard Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.createLessonPlan.type).to.eql(\"standard\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"secondLpName\", \"MultipleStandLpTestAuto_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"secondDesc\",\"MultipleStandLpDescription_\"+Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nmutation {\r\n  createLessonPlan(lessonPlan: {name: \"{{secondLpName}}\", description: \"{{secondDesc}}\", type: \"standard\"}) {\r\n    id\r\n    name\r\n    description\r\n    type\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sequence ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"sequenceMlId1\", (jsonData.data.block.lessonPlans.length +1));\r",
+									"var num=pm.environment.get(\"sequenceMlId1\");\r",
+									"var res=parseInt(num);\r",
+									"postman.setEnvironmentVariable(\"sequenceMlId2\", res+1);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id:ID!) {\r\n    block(id:$id){\r\n    title \r\n    lessonPlans\r\n    {\r\n        sequence\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n    \"id\":{{firstBlockId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Link Lesson Plan To First Block",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Linked First Block ID\",()=>{\r",
+									"    pm.expect(jsonData.data.bulkLinkLessonPlansToBlock.blockLessonPlans[0].blockId).to.eql(pm.environment.get(\"firstBlockId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Linked Second Block ID\",()=>{\r",
+									"    pm.expect(jsonData.data.bulkLinkLessonPlansToBlock.blockLessonPlans[1].blockId).to.eql(pm.environment.get(\"firstBlockId\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation bulkLinkLessonPlansToBlock($data: bulkLinkLessonPlansToBlockInputType!) {\r\n  bulkLinkLessonPlansToBlock(data: $data) {\r\n    blockLessonPlans {\r\n      blockId\r\n      lessonPlanId\r\n      sequence\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"data\": {\r\n    \"blockId\": \"{{firstBlockId}}\",\r\n     \"lessonPlanInput\": [{\r\n        \"lessonPlanId\": {{createdLpIdForIA}},\r\n        \"sequence\": {{sequenceMlId1}},\r\n        \"displaySequence\": {{sequenceMlId1}}\r\n      },\r\n      {\r\n        \"lessonPlanId\": {{createdLpIdForStand}},\r\n        \"sequence\": {{sequenceMlId2}},\r\n        \"displaySequence\": {{sequenceMlId2}}\r\n      }\r\n      ]\r\n   \r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Block Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"var blockLength=jsonData.data.blockMap.blocks.length;\r",
+									"pm.environment.set(\"blockSequence1\",(jsonData.data.blockMap.blocks[blockLength-1].displaySequence)+1);\r",
+									"var num=pm.environment.get(\"blockSequence1\");\r",
+									"var res=parseInt(num);\r",
+									"postman.setEnvironmentVariable(\"blockSequence2\", res+1);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!)\r\n{\r\n  blockMap(id:$id)\r\n  {\r\n   blocks{\r\n    displaySequence\r\n    \r\n    }\r\n  }\r\n}\r\n  ",
+								"variables": "{\r\n  \"id\": {{blockMapId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Link Blocks To Block Map",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation bulkLinkBlocksToBlockMap($data: blockMapBlockInputType) {\r\n  bulkLinkBlocksToBlockMap(data: $data) {\r\n    blockMapBlocks {\r\n      sequence\r\n      quarter\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"data\": {\r\n    \"blockMapId\": \"{{blockMapId}}\",\r\n    \"blockInput\": [\r\n      {\r\n        \"blockId\": \"{{firstBlockId}}\",\r\n        \"sequence\": {{blockSequence1}},\r\n        \"displaySequence\": {{blockSequence1}},\r\n        \"quarter\": 1\r\n      },\r\n      {\r\n        \"blockId\": \"{{secondBlockId}}\",\r\n        \"sequence\": {{blockSequence2}},\r\n        \"displaySequence\": {{blockSequence2}},\r\n        \"quarter\": 1\r\n      }\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CES",
+			"item": [
+				{
+					"name": "Create First Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdProjectId\", jsonData.data.createProject.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify product id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.product.id).to.eql(pm.environment.get(\"productID\"));   \r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify board id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.board.id).to.eql(pm.environment.get(\"boardID\"));    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify  subject id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.subject.id).to.eql(pm.environment.get(\"subjectID\"));    \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"verify standard id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.standard.id).to.eql(pm.environment.get(\"standardID\"));    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"firstProjectName\",\"FirstMultipleProject_\"+Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createProject($input: ProjectCreateInputType!) {\r\n  createProject(input: $input) {\r\n    id\r\n    name\r\n    workflowStatus\r\n    product {\r\n      id\r\n      name\r\n    }\r\n    board {\r\n      id\r\n      name\r\n    }\r\n    standard {\r\n      id\r\n      name\r\n      displayName\r\n    }\r\n    subject {\r\n      id\r\n      name\r\n    }\r\n    block {\r\n      id\r\n      bId\r\n      title\r\n      childrenType\r\n    }\r\n    contents {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      template\r\n      currentStage\r\n    }\r\n    dailyPlans {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      currentStage\r\n    }\r\n    assignees {\r\n      author {\r\n        id\r\n        name\r\n      }\r\n      reviewer1 {\r\n        id\r\n        name\r\n      }\r\n      reviewer2 {\r\n        id\r\n        name\r\n      }\r\n      academicSignOff {\r\n        id\r\n        name\r\n      }\r\n      editor {\r\n        id\r\n        name\r\n      }\r\n      visualizer {\r\n        id\r\n        name\r\n      }\r\n      assetUploader {\r\n        id\r\n        name\r\n      }\r\n      assetAuthorizer {\r\n        id\r\n        name\r\n      }\r\n      proofReader {\r\n        id\r\n        name\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"input\": {\r\n    \"name\": \"{{firstProjectName}}\",\r\n    \"boardId\": {{boardID}},\r\n    \"subjectId\": {{subjectID}},\r\n    \"standardId\": {{standardID}},\r\n    \"productId\": {{productID}},\r\n    \"entityId\": {{firstBlockId}},\r\n    \"entityType\": \"Block\",\r\n    \"type\": \"LessonPlan\",\r\n    \"childrenEntityIds\": [\r\n      {{createdLpIdForIA}}\r\n    ],\r\n    \"assignees\": {\r\n      \"author\": \"skip\",\r\n      \"reviewer1\": \"skip\",\r\n      \"reviewer2\": \"skip\",\r\n      \"academicSignOff\": \"skip\",\r\n      \"editor\": \"615339ab43a5ff0011f4ed64\",\r\n      \"visualizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetUploader\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetAuthorizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"proofReader\": \"615339ab43a5ff0011f4ed64\"\r\n    }\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Second Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdSecondProjectId\", jsonData.data.createProject.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify product id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.product.id).to.eql(pm.environment.get(\"productID\"));    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify board id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.board.id).to.eql(pm.environment.get(\"boardID\"));     \r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify  subject id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.subject.id).to.eql(pm.environment.get(\"subjectID\"));    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify standard id\",()=>{\r",
+									"    pm.expect(jsonData.data.createProject.standard.id).to.eql(pm.environment.get(\"standardID\"));     \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"secondProjectName\",\"SecondMultipleProject_\"+Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createProject($input: ProjectCreateInputType!) {\r\n  createProject(input: $input) {\r\n    id\r\n    name\r\n    workflowStatus\r\n    product {\r\n      id\r\n      name\r\n    }\r\n    board {\r\n      id\r\n      name\r\n    }\r\n    standard {\r\n      id\r\n      name\r\n      displayName\r\n    }\r\n    subject {\r\n      id\r\n      name\r\n    }\r\n    block {\r\n      id\r\n      bId\r\n      title\r\n      childrenType\r\n    }\r\n    contents {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      template\r\n      currentStage\r\n    }\r\n    dailyPlans {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      currentStage\r\n    }\r\n    assignees {\r\n      author {\r\n        id\r\n        name\r\n      }\r\n      reviewer1 {\r\n        id\r\n        name\r\n      }\r\n      reviewer2 {\r\n        id\r\n        name\r\n      }\r\n      academicSignOff {\r\n        id\r\n        name\r\n      }\r\n      editor {\r\n        id\r\n        name\r\n      }\r\n      visualizer {\r\n        id\r\n        name\r\n      }\r\n      assetUploader {\r\n        id\r\n        name\r\n      }\r\n      assetAuthorizer {\r\n        id\r\n        name\r\n      }\r\n      proofReader {\r\n        id\r\n        name\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"input\": {\r\n    \"name\": \"{{secondProjectName}}\",\r\n    \"boardId\": {{boardID}},\r\n    \"subjectId\": {{subjectID}},\r\n    \"standardId\": {{standardID}},\r\n    \"productId\": {{productID}},\r\n    \"entityId\": {{firstBlockId}},\r\n    \"entityType\": \"Block\",\r\n    \"type\": \"LessonPlan\",\r\n    \"childrenEntityIds\": [\r\n      {{createdLpIdForStand}}\r\n    ],\r\n    \"assignees\": {\r\n      \"author\": \"skip\",\r\n      \"reviewer1\": \"skip\",\r\n      \"reviewer2\": \"skip\",\r\n      \"academicSignOff\": \"skip\",\r\n      \"editor\": \"615339ab43a5ff0011f4ed64\",\r\n      \"visualizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetUploader\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetAuthorizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"proofReader\": \"615339ab43a5ff0011f4ed64\"\r\n    }\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get The First Project Assigned To Logged In User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"verify 200 status code\", () => {\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].name).to.eql(pm.environment.get(\"firstProjectName\"));\r",
+									"});\r",
+									"pm.test(\"verify First Project Product Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].product.name).to.eql(\"XSEED One\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Board Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].board.name).to.eql(pm.environment.get(\"boardName\"));;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Standard Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].standard.name).to.eql(\"1\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Subject Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].subject.name).to.eql(\"English\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Block Id\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.id).to.eql(pm.environment.get(\"firstBlockId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Block Title\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"firstBlockTitle\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Lesson Plan Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].contents[0].name).to.eql(pm.environment.get(\"firstLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Lesson Plan Type\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].contents[0].type).to.eql(\"information_and_assessment\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  multipleProjects(filters: {page: 0, limit: 50, isMyProjects: true, searchKey: \"{{firstProjectName}}\"}) {\r\n    totalCount\r\n    projects {\r\n      id\r\n      name\r\n      workflowStatus\r\n      product {\r\n        id\r\n        name\r\n      }\r\n      board {\r\n        id\r\n        name\r\n      }\r\n      standard {\r\n        id\r\n        name\r\n        displayName\r\n      }\r\n      subject {\r\n        id\r\n        name\r\n        shortName\r\n      }\r\n      block {\r\n        id\r\n        bId\r\n        title\r\n        childrenType\r\n      }\r\n      contents {\r\n        library_id\r\n        name\r\n        currentStage\r\n        type\r\n        template\r\n      }\r\n      dailyPlans {\r\n        library_id\r\n        name\r\n        currentStage\r\n        type\r\n      }\r\n      assignees {\r\n        author {\r\n          id\r\n          name\r\n        }\r\n        reviewer1 {\r\n          id\r\n          name\r\n        }\r\n        reviewer2 {\r\n          id\r\n          name\r\n        }\r\n        academicSignOff {\r\n          id\r\n          name\r\n        }\r\n        editor {\r\n          id\r\n          name\r\n        }\r\n        visualizer {\r\n          id\r\n          name\r\n        }\r\n        assetUploader {\r\n          id\r\n          name\r\n        }\r\n        assetAuthorizer {\r\n          id\r\n          name\r\n        }\r\n        proofReader {\r\n          id\r\n          name\r\n        }\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get The Second Project Assigned To Logged In User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"verify 200 status code\", () => {\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].name).to.eql(pm.environment.get(\"secondProjectName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Product Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].product.name).to.eql(\"XSEED One\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify First Project Board Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].board.name).to.eql(pm.environment.get(\"boardName\"));;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Standard Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].standard.name).to.eql(\"1\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Subject Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].subject.name).to.eql(\"English\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Block Id\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.id).to.eql(pm.environment.get(\"firstBlockId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Block Title\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"firstBlockTitle\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Lesson Plan Name\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].contents[0].name).to.eql(pm.environment.get(\"secondLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Second Project Lesson Plan Type\", () => {\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].contents[0].type).to.eql(\"standard\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  multipleProjects(filters: {page: 0, limit: 50, isMyProjects: true, searchKey: \"{{secondProjectName}}\"}) {\r\n    totalCount\r\n    projects {\r\n      id\r\n      name\r\n      workflowStatus\r\n      product {\r\n        id\r\n        name\r\n      }\r\n      board {\r\n        id\r\n        name\r\n      }\r\n      standard {\r\n        id\r\n        name\r\n        displayName\r\n      }\r\n      subject {\r\n        id\r\n        name\r\n        shortName\r\n      }\r\n      block {\r\n        id\r\n        bId\r\n        title\r\n        childrenType\r\n      }\r\n      contents {\r\n        library_id\r\n        name\r\n        currentStage\r\n        type\r\n        template\r\n      }\r\n      dailyPlans {\r\n        library_id\r\n        name\r\n        currentStage\r\n        type\r\n      }\r\n      assignees {\r\n        author {\r\n          id\r\n          name\r\n        }\r\n        reviewer1 {\r\n          id\r\n          name\r\n        }\r\n        reviewer2 {\r\n          id\r\n          name\r\n        }\r\n        academicSignOff {\r\n          id\r\n          name\r\n        }\r\n        editor {\r\n          id\r\n          name\r\n        }\r\n        visualizer {\r\n          id\r\n          name\r\n        }\r\n        assetUploader {\r\n          id\r\n          name\r\n        }\r\n        assetAuthorizer {\r\n          id\r\n          name\r\n        }\r\n        proofReader {\r\n          id\r\n          name\r\n        }\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
