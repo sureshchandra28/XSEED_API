@@ -1072,7 +1072,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/StudentCoverPhoto.jpg"
+									"src": "assets/StudentCoverPhoto.jpg"
 								}
 							]
 						},
@@ -1150,7 +1150,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/worksheet1.pdf"
+									"src": "assets/worksheet1.pdf"
 								}
 							]
 						},
@@ -1228,7 +1228,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/worksheet1.pdf"
+									"src": "assets/worksheet1.pdf"
 								}
 							]
 						},
@@ -1306,7 +1306,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/firstTitle.jpg"
+									"src": "assets/firstTitle.jpg"
 								}
 							]
 						},
@@ -1384,7 +1384,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/secondTitle.png"
+									"src": "assets/secondTitle.png"
 								}
 							]
 						},
@@ -1462,7 +1462,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/thirdTitle.jpg"
+									"src": "assets/thirdTitle.jpg"
 								}
 							]
 						},
@@ -1540,7 +1540,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/classWork.jpg"
+									"src": "assets/classWork.jpg"
 								}
 							]
 						},
@@ -1618,7 +1618,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/homework.jpg"
+									"src": "assets/homework.jpg"
 								}
 							]
 						},
@@ -1697,7 +1697,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/Question_Answer.jpg"
+									"src": "assets/Question_Answer.jpg"
 								}
 							]
 						},
@@ -1775,7 +1775,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "src/resources/assets/Question_Answer.jpg"
+									"src": "assets/Question_Answer.jpg"
 								}
 							]
 						},
