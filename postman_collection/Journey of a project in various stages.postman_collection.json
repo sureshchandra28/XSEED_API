@@ -1,0 +1,2488 @@
+{
+	"info": {
+		"_postman_id": "478c3280-2814-434c-9271-bc9a6ff91520",
+		"name": "Journey of a project in various stages",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login Library",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"     pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushal.mishra+admin@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login CES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"cesToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lib",
+			"item": [
+				{
+					"name": "Get Subject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var subjectList = pm.response.json().data.subjects\r",
+									"for(i = 0; i < subjectList.length; i++) {\r",
+									"    if (subjectList[i].name == \"English\") {\r",
+									"        pm.environment.set(\"subjectID\", subjectList[i].id)\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  subjects{\r\n        id\r\n        name\r\n    }\r\n}\r\n\r\n  \r\n\r\n  ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// var boardList = pm.response.json().data.boards\r",
+									"// for(i = 0; i < boardList.length; i++) {\r",
+									"//     if (boardList[i].name == \"XSEED One India\") {\r",
+									"//         pm.environment.set(\"boardID\", boardList[i].id)\r",
+									"//         pm.environment.set(\"boardName\", boardList[i].name)\r",
+									"//     }\r",
+									"// }\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									" pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
+									" pm.environment.set(\"boardID\", \"74\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  boards{\r\n        id\r\n        name\r\n    }\r\n}\r\n\r\n  ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var productList = pm.response.json().data.products\r",
+									"for(i = 0; i < productList.length; i++) {\r",
+									"    if (productList[i].name == \"XSEED One\") {\r",
+									"        pm.environment.set(\"productID\", productList[i].id)    \r",
+									"    }\r",
+									"}\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  products{\r\n        id\r\n        name\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Standard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var standardList = pm.response.json().data.standards\r",
+									"for(i = 0; i < standardList.length; i++) {\r",
+									"    if (standardList[i].name == \"1\") {\r",
+									"        pm.environment.set(\"standardID\", standardList[i].id)    \r",
+									"    }\r",
+									"}\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  standards{\r\n        id\r\n        name\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Block For Journey Of A Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"jBlockId\",jsonData.data.createBlock.id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jBlockTitle\",\"JourneyBlockTitle_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"firstBId\",\"TTCBEN\"+Date.now());\r",
+									"pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
+									"//pm.environment.set(\"boardID\", \"74\");\r",
+									"pm.environment.set(\"blockMapId\",\"298\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{firstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Block Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"jBlockSeqId\", (jsonData.data.blockMap.blocks.length +1));\r",
+									"//console.info(jsonData.data.blockMap.blocks.length +1);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!){\r\n  blockMap(id:$id){\r\n    blocks{\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\":{{blockMapId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Link Blocks To Block Map",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Liked Block Map Id\",()=>{\r",
+									"    pm.expect(jsonData.data.linkBlockToBlockMap.blockMapId).to.eql(pm.environment.get(\"blockMapId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify Liked Block Id\",()=>{\r",
+									"    pm.expect(jsonData.data.linkBlockToBlockMap.blockId).to.eql(pm.environment.get(\"jBlockId\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  linkBlockToBlockMap(data: {blockMapId: {{blockMapId}}, blockId: {{jBlockId}}, sequence: {{jBlockSeqId}}, displaySequence: {{jBlockSeqId}}, quarter: 1}) {\r\n    sequence\r\n    displaySequence\r\n    blockId\r\n    blockMapId\r\n    quarter\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create A Lesson Plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"jCreatedLpId\", jsonData.data.createLessonPlan.id);\r",
+									"pm.test('Check that created Lesson Plan details are correct', () => \r",
+									"{ \r",
+									"    pm.expect(jsonData.data.createLessonPlan.name).to.eql(pm.environment.get(\"jLpName\"));\r",
+									"    pm.expect(jsonData.data.createLessonPlan.description).to.eql(pm.environment.get(\"jLpDesc\"));\r",
+									"    pm.expect(jsonData.data.createLessonPlan.type).to.eql('standard');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify 200 Status Code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"jLpName\", \"JourneyLpTestAuto_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"jLpDesc\",\"JourneyLpDescription_\"+Date.now());\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "    mutation {\r\n        createLessonPlan(lessonPlan: {name: \"{{jLpName}}\", description: \"{{jLpDesc}}\", type: \"standard\"}) \r\n        {\r\n          id\r\n          name\r\n          description\r\n          type\r\n        }\r\n      }",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sequence ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"jSequenceId\", (jsonData.data.block.lessonPlans.length +1));\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"setTimeout(() => {}, 1500); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id:ID!) {\r\n    block(id:$id){\r\n    title \r\n    lessonPlans\r\n    {\r\n        sequence\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n    \"id\":{{jBlockId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Link Lesson Plan To Block",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"verify Link Lesson Plan to Block\",()=>{\r",
+									"pm.response.to.be.ok;\r",
+									"pm.expect(jsonData.data.linkLessonPlanToBlock.blockId).to.eql(pm.environment.get(\"jBlockId\"));\r",
+									"});\r",
+									"\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"     pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"    pm.test(\"verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.linkLessonPlanToBlock.lessonPlanId).to.eql(pm.environment.get(\"jCreatedLpId\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n    linkLessonPlanToBlock(data: \r\n      {blockId: {{jBlockId}}, lessonPlanId: \"{{jCreatedLpId}}\", sequence: {{jSequenceId}}, displaySequence: {{jSequenceId}}\r\n      }) \r\n      {\r\n        blockId\r\n        sequence\r\n        displaySequence\r\n        lessonPlanId\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CES",
+			"item": [
+				{
+					"name": "Get Available Block Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"var blockList=jsonData.data.getAvailableBlocksOnStandardSubjectBoardProductComboForProjectCreation;\r",
+									"for(i = 0; i < blockList.length; i++){\r",
+									"    if (blockList[i].title == pm.environment.get(\"jBlockTitle\")) {\r",
+									"\t    pm.environment.set(\"jAvailBlockID\", blockList[i].id);\r",
+									"\t}\r",
+									"}\r",
+									"// pm.environment.set(\"availBlockID\",jsonData.data.getAvailableBlocksOnStandardSubjectBoardProductComboForProjectCreation.id);\r",
+									"\r",
+									"pm.test(\"verify Available Block\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  getAvailableBlocksOnStandardSubjectBoardProductComboForProjectCreation(boardName: \"{{boardName}}\", subjectId: {{subjectID}}, standardId: {{standardID}}, productId: {{productID}}) {\r\n        id\r\n        title\r\n        bId\r\n        childrenType\r\n        sequence\r\n            lessonPlans {\r\n            id\r\n            name\r\n        }\r\n        dailyPlans {\r\n            id\r\n            name\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create A Project",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"jProjectName\",\"ProjectName_\"+Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"jCreatedProjectId\",jsonData.data.createProject.id);\r",
+									"pm.environment.set(\"jAuthorId\",jsonData.data.createProject.assignees.author.id);\r",
+									"\r",
+									"pm.test(\"Verify 200 Status Code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createProject($input: ProjectCreateInputType!) {\r\n  createProject(input: $input) {\r\n    id\r\n    name\r\n    workflowStatus\r\n    product {\r\n      id\r\n      name\r\n    }\r\n    board {\r\n      id\r\n      name\r\n    }\r\n    standard {\r\n      id\r\n      name\r\n      displayName\r\n    }\r\n    subject {\r\n      id\r\n      name\r\n    }\r\n    block {\r\n      id\r\n      bId\r\n      title\r\n      childrenType\r\n    }\r\n    contents {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      template\r\n      currentStage\r\n    }\r\n    dailyPlans {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      currentStage\r\n    }\r\n    assignees {\r\n      author {\r\n        id\r\n        name\r\n      }\r\n      reviewer1 {\r\n        id\r\n        name\r\n      }\r\n      reviewer2 {\r\n        id\r\n        name\r\n      }\r\n      academicSignOff {\r\n        id\r\n        name\r\n      }\r\n      editor {\r\n        id\r\n        name\r\n      }\r\n      visualizer {\r\n        id\r\n        name\r\n      }\r\n      assetUploader {\r\n        id\r\n        name\r\n      }\r\n      assetAuthorizer {\r\n        id\r\n        name\r\n      }\r\n      proofReader {\r\n        id\r\n        name\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"input\": {\r\n    \"name\": \"{{jProjectName}}\",\r\n    \"boardId\": {{boardID}},\r\n    \"subjectId\": {{subjectID}},\r\n    \"standardId\": {{standardID}},\r\n    \"productId\": {{productID}},\r\n    \"entityId\": {{jBlockId}},\r\n    \"entityType\": \"Block\",\r\n    \"type\": \"LessonPlan\",\r\n    \"childrenEntityIds\": [\r\n      {{jCreatedLpId}}\r\n    ],\r\n    \"assignees\": {\r\n      \"author\": \"615339ab43a5ff0011f4ed64\",\r\n      \"reviewer1\": \"615339ab43a5ff0011f4ed64\",\r\n      \"reviewer2\": \"skip\",\r\n      \"academicSignOff\": \"skip\",\r\n      \"editor\": \r\n      \"615339ab43a5ff0011f4ed64\",\r\n      \"visualizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetUploader\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetAuthorizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"proofReader\": \"615339ab43a5ff0011f4ed64\"\r\n    }\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Cover Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"coverImageDataId\",jsonData.data._id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded Image\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"StudentCoverPhoto\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "StudentCoverPhoto.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Content Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"contentBookDataId\",jsonData.data._id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded Content Book\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"worksheet1\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "worksheet1.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Work Sheet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"workSheetDataId\",jsonData.data._id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded WorkSheet\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"worksheet1\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "worksheet1.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload 1st Title Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"firstTitleID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify First Title Image Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"firstTitle\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "firstTitle.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload 2nd Title image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"secondTitleID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Second Title Image Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"secondTitle\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "secondTitle.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload 3rd Title Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"thirdTitleID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Third Title Image Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"thirdTitle\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "thirdTitle.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Class Work Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"classWorkDataID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded Class Work Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"classWork\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "classWork.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload HomeWork Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"homeWorkDataID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded Home Work Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"homework\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "homework.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload ClassWorkQuestion_Answered",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"cwQueAnsDataID\",jsonData.data._id);\r",
+									"    pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded ClassWork Queston Answered Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"Question_Answer\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "Question_Answer.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload HomeWorkQuestion_Answered",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.environment.set(\"hmQueAnsDataID\",jsonData.data._id);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Uploaded HomeWork Queston Answered Data\",()=>{\r",
+									"    pm.expect(jsonData.data.data.original).contains(\"Question_Answer\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "https://ces.xseeddigital.info/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "preset",
+									"value": "question",
+									"type": "text"
+								},
+								{
+									"key": "appName",
+									"value": "content_entry_frontend",
+									"type": "text"
+								},
+								{
+									"key": "assets",
+									"type": "file",
+									"src": "Question_Answer.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xseed-rest-gateway.xseeddigital.info/api/upload",
+							"protocol": "https",
+							"host": [
+								"xseed-rest-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project LessonPlan Current Stage Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var actDiscExp= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.activity_discussion.explanations[0]._id;\r",
+									"pm.environment.set(\"actDiscExpID\", actDiscExp)\r",
+									"\r",
+									"var ActDiscInst= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.activity_discussion.instructions[0]._id;\r",
+									"pm.environment.set(\"ActDiscInstID\", ActDiscInst)\r",
+									"\r",
+									"var genDiscExp= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.generalized_discussion.explanations[0]._id;\r",
+									"pm.environment.set(\"genDiscExpID\", genDiscExp)\r",
+									"\r",
+									"var genDiscInst= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.generalized_discussion.instructions[0]._id;\r",
+									"pm.environment.set(\"genDiscInstID\", genDiscInst)\r",
+									"\r",
+									"var highOrdThiExp= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.higher_order_thinking.explanations[0]._id;\r",
+									"pm.environment.set(\"highOrdThiExpID\", highOrdThiExp)\r",
+									"\r",
+									"var highOrdThiInst= jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.analysis.higher_order_thinking.instructions[0]._id;\r",
+									"pm.environment.set(\"highOrdThiInstID\", highOrdThiInst)\r",
+									"\r",
+									"var csdActionIns=jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.action.instructions[0]._id;\r",
+									"pm.environment.set(\"curStageActIns\", csdActionIns);\r",
+									"\r",
+									"var csdKey=jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.keywords[0]._id;\r",
+									"pm.environment.set(\"curStageKeyword\", csdKey);\r",
+									"\r",
+									"var csdResId=jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data._id;\r",
+									"pm.environment.set(\"curStageRefId\", csdResId);\r",
+									"\r",
+									"var csdAimRes=jsonData.data.projectLessonPlanCurrentStageData.currentStageData.data.aim.resources[0]._id;\r",
+									"pm.environment.set(\"curStageAimRes\", csdAimRes);\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  projectLessonPlanCurrentStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: \"{{jCreatedLpId}}\") {\r\n    currentStage\r\n    name\r\n    library_id\r\n    subjectName\r\n    type\r\n    subject {\r\n      id\r\n      name\r\n    }\r\n    commentsCount {\r\n      aim\r\n      action\r\n      analysis\r\n      application\r\n      assessment\r\n      summary\r\n    }\r\n    dailyPlan {\r\n      name\r\n      correspondingTimeData {\r\n        status\r\n        summary\r\n      }\r\n    }\r\n    currentStageAssetsSignedUrl\r\n    currentStageData {\r\n      validationStatus\r\n      createdAt\r\n      updatedAt\r\n      equationEditorJsonArray {\r\n        latex\r\n        json\r\n      }\r\n      data\r\n    }\r\n    diff\r\n  }\r\n  lessonPlanStaticTextsData(type: \"SchoolLessonPlan\", template: \"standard\")\r\n  lessonPlansWithMicroTopics(ids: [{{jCreatedLpId}}]) {\r\n    id\r\n    name\r\n    type\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Project LP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"let actDisExpDesBrTxt=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.explanations[0].brief.text;\r",
+									"\r",
+									"pm.test(\"Verify 200 Status Code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Activity Discusson Explanation Description brief text \",()=>{\r",
+									"    const sp=actDisExpDesBrTxt.split('\"\"','\"');\r",
+									"    for(var i=0;i<sp.length;i++){\r",
+									"    if(sp[i]==(\"This is ABCD image\")){\r",
+									"    pm.expect(actDisExpDes).to.eql(\"This is ABCD image\");\r",
+									"    }\r",
+									"  }\r",
+									"});\r",
+									"\r",
+									"let actDisExpDeskeyQues=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.key_question;\r",
+									"pm.test(\"Verify Activity Discusson Explanation Description Key Questoin  \",()=>{\r",
+									"    pm.expect(actDisExpDeskeyQues).contains(\"this is an activity discussion key questions.\");\r",
+									"});\r",
+									"\r",
+									"let actDisExpDeskeyQuescGuide=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.key_question_guide;\r",
+									"pm.test(\"Verify Activity Discusson Explanation Description Key Questoin Guide \",()=>{\r",
+									"    pm.expect(actDisExpDeskeyQuescGuide).contains(\"This is an activity discussion  key question guide\");\r",
+									"});\r",
+									"\r",
+									"let actInstruction=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.instructions[0].description;\r",
+									"pm.test(\"Verify Activity Disccusion instructions \",()=>{\r",
+									"    pm.expect(actInstruction).contains(\"This is an activity explanation text box\");\r",
+									"});\r",
+									"\r",
+									"let actTeacherTip=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.teacher_tip;\r",
+									"pm.test(\"Verify Activity Discussion Teacher Tip \",()=>{\r",
+									"    pm.expect(actTeacherTip).contains(\"This is Teacher Tip\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"let genTeacherTip=jsonData.data.saveProjectLessonPlanStageData.analysis.generalized_discussion.teacher_tip;\r",
+									"pm.test(\"Verify Generalized Discussion Teacher Tip \",()=>{\r",
+									"    pm.expect(genTeacherTip).contains(\"This is a Teacher Tip\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"let higherOrdTeacherTip=jsonData.data.saveProjectLessonPlanStageData.analysis.higher_order_thinking.teacher_tip;\r",
+									"pm.test(\"Verify Higher Order Thinking Teacher Tip \",()=>{\r",
+									"    pm.expect(higherOrdTeacherTip).contains(\"This is the Teacher Tip\");\r",
+									"});\r",
+									"\r",
+									"let types=jsonData.data.saveProjectLessonPlanStageData.analysis.types;\r",
+									"pm.test(\"Verify Types \",()=>{\r",
+									"    pm.expect(types).contains(\"pair\");\r",
+									"});\r",
+									"\r",
+									"let summary=jsonData.data.saveProjectLessonPlanStageData.analysis.summary;\r",
+									"pm.test(\"Verify Analysis summary \",()=>{\r",
+									"    pm.expect(summary).contains(\"This is an Analysis summary\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"let actSummary=jsonData.data.saveProjectLessonPlanStageData.action.summary;\r",
+									"pm.test(\"Verify action summary \",()=>{\r",
+									"    pm.expect(actSummary).contains(\"This is an Action summary\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"let classWrkSummary=jsonData.data.saveProjectLessonPlanStageData.application.summaryData.classwork;\r",
+									"pm.test(\"Verify Class Work summary \",()=>{\r",
+									"    pm.expect(classWrkSummary).contains(\"This is a Classwork\");\r",
+									"});\r",
+									"\r",
+									"let homeWrkSummary=jsonData.data.saveProjectLessonPlanStageData.application.summaryData.homework;\r",
+									"pm.test(\"Verify Home Work summary \",()=>{\r",
+									"    pm.expect(homeWrkSummary).contains(\"This is a homework\");\r",
+									"});\r",
+									"\r",
+									"var actDisExpDes=jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.explanations[0].description;\r",
+									"pm.test(\"Verify Activity Discusson Explanation Description Title Text \",()=>{\r",
+									"    pm.expect(actDisExpDes).to.eql(\"This is 1st Title\");\r",
+									"});\r",
+									"\r",
+									"var genDisExpDes=jsonData.data.saveProjectLessonPlanStageData.analysis.generalized_discussion.explanations[0].description;\r",
+									"pm.test(\"Verify Generalized Discussion Title Text \",()=>{\r",
+									"    pm.expect(genDisExpDes).to.eql(\"This is the 2nd Title\");\r",
+									"});\r",
+									"\r",
+									"var higOrdThinking=jsonData.data.saveProjectLessonPlanStageData.analysis.higher_order_thinking.explanations[0].description;\r",
+									"pm.test(\"Verify Higher order Thinking Title Text \",()=>{\r",
+									"    pm.expect(higOrdThinking).to.eql(\"This is the 3rd Title\");\r",
+									"});\r",
+									"\r",
+									"let totalTime=jsonData.data.saveProjectLessonPlanStageData.time;\r",
+									"pm.test(\"Verify Total Time \",()=>{\r",
+									"    pm.expect(totalTime).contains(\"35 mins\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify 1st Title AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.analysis.activity_discussion.explanations[0].brief.assetId).to.eql(pm.environment.get(\"firstTitleID\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify 2nd Title AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.analysis.generalized_discussion.explanations[0].brief.assetId).to.eql(pm.environment.get(\"secondTitleID\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify 3rd Title AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.\r",
+									"saveProjectLessonPlanStageData.analysis.higher_order_thinking.explanations[0].brief.assetId).to.eql(pm.environment.get(\"thirdTitleID\"));\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Verify Cover Image AssetId  \",()=>{\r",
+									"//     pm.expect(jsonData.data.saveProjectLessonPlanStageData.brief.assetId).to.eql(pm.environment.get(\"coverImageDataId\"));\r",
+									"// });\r",
+									"\r",
+									"pm.test(\"Verify content Book AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.aim.resources[0].assetId).to.eql(pm.environment.get(\"contentBookDataId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Worksheet AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.aim.resources[1].assetId).to.eql(pm.environment.get(\"workSheetDataId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Classwork AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.application.classwork.brief.assetId).to.eql(pm.environment.get(\"classWorkDataID\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Homework Question AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.application.homework.question.assetId).to.eql(pm.environment.get(\"homeWorkDataID\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Homework Question Answer AssetId  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.application.homework.question_answer.brief.assetId).to.eql(pm.environment.get(\"hmQueAnsDataID\"));\r",
+									"});\r",
+									"\r",
+									"let assessmentSummaryAp=jsonData.data.saveProjectLessonPlanStageData.assessment.summaryData.approaching;\r",
+									"pm.test(\"Verify Assessment Summary Approach \",()=>{\r",
+									"    pm.expect(assessmentSummaryAp).contains(\"This is assessment approaching\");\r",
+									"});\r",
+									"\r",
+									"let assessmentSummarymeet=jsonData.data.saveProjectLessonPlanStageData.assessment.summaryData.meeting;\r",
+									"pm.test(\"Verify Assessment Summary Meeting \",()=>{\r",
+									"    pm.expect(assessmentSummarymeet).contains(\"This is for Meeting\");\r",
+									"});\r",
+									"\r",
+									"let assessmentSummaryExceed=jsonData.data.saveProjectLessonPlanStageData.assessment.summaryData.exceeding;\r",
+									"pm.test(\"Verify Assessment Summary Exceeding \",()=>{\r",
+									"    pm.expect(assessmentSummaryExceed).contains(\"This is for Exceeding\");\r",
+									"});\r",
+									"\r",
+									"let assessmentChkQues=jsonData.data.saveProjectLessonPlanStageData.assessment.check.question.brief.text;\r",
+									"pm.test(\"Verify Assessment Check Question Text \",()=>{\r",
+									"    pm.expect(assessmentChkQues).contains(\"Practice of A B C D word.\");\r",
+									"});\r",
+									"\r",
+									"let assessmentChkQuesAns=jsonData.data.saveProjectLessonPlanStageData.assessment.check.question_answer.brief.text;\r",
+									"pm.test(\"Verify Assessment Check Question Ansewer Text \",()=>{\r",
+									"    pm.expect(assessmentChkQuesAns).contains(\"This is the worksheet answered file\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Title  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.lp_title).contains(pm.environment.get(\"jLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description  \",()=>{\r",
+									"    pm.expect(jsonData.data.saveProjectLessonPlanStageData.lp_description).contains(pm.environment.get(\"jLpDesc\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($projectId: ID!, $lessonPlanLibraryId: ID!, $data: JSON!, $equationEditorJsonArray: [EquationEditorJsonInput]!) {\r\n  saveProjectLessonPlanStageData(projectId: $projectId, contentLibraryId: $lessonPlanLibraryId, data: $data, equationEditorJsonArray: $equationEditorJsonArray)\r\n}\r\n",
+								"variables": "{\r\n  \"lessonPlanLibraryId\": \"{{jCreatedLpId}}\",\r\n  \"projectId\": \"{{jCreatedProjectId}}\",\r\n  \"data\": {\r\n    \"analysis\": {\r\n      \"activity_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{actDiscExpID}}\",\r\n            \"description\": \"This is 1st Title\",\r\n            \"assetId\": \"{{firstTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is ABCD image\\\"}]}]}\",\r\n              \"assetId\": \"{{firstTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"this is an activity discussion key questions.\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity discussion  key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{ActDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"generalized_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{genDiscExpID}}\",\r\n            \"description\": \"This is the 2nd Title\",\r\n            \"assetId\": \"{{secondTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Reading book image\\\"}]}]}\",\r\n              \"assetId\": \"{{secondTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{genDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized Explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"higher_order_thinking\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiExpID}}\",\r\n            \"description\": \"This is the 3rd Title\",\r\n            \"assetId\": \"{{thirdTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Books images\\\"}]}]}\",\r\n              \"assetId\": \"{{thirdTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking HOTS explanation\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Analysis summary\\\"}]}]}\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\"\r\n    },\r\n    \"action\": {\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Action summary\\\"}]}]}\",\r\n      \"time\": \"15 mins\",\r\n      \"type\": \"\",\r\n      \"instructions\": [\r\n        {\r\n          \"instructionBreak\": false,\r\n          \"_id\": \"{{curStageActIns}}\",\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action step description\\\"}]}]}\",\r\n          \"children\": [],\r\n          \"assets\": []\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action teacher tip description\\\"}]}]}\"\r\n    },\r\n    \"application\": {\r\n      \"classwork\": {\r\n        \"brief\": {\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"A B Word Practices\\\"}]}]}\",\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"type\": \"image\"\r\n        },\r\n        \"description\": \"1\",\r\n        \"assetId\": \"{{classWorkDataID}}\",\r\n        \"assetApproved\": true,\r\n        \"type\": \"image\"\r\n      },\r\n      \"homework\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{homeWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{homeWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Here you can find the homework answered file.\\\"}]}]}\",\r\n            \"assetId\": \"{{hmQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{hmQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"1\"\r\n      },\r\n      \"differentiation_tips\": {\r\n        \"need_more_help\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the AB word Description.\\\"}]}]}\"\r\n        },\r\n        \"need_extra_challenge\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the extra challenge description\\\"}]}]}\"\r\n        }\r\n      },\r\n      \"types\": [\r\n        \"individual\"\r\n      ],\r\n      \"summary\": \"\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\",\r\n      \"more_practice\": [],\r\n      \"more_practice_time\": \"7 mins\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"classwork\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Classwork\\\"}]}]}\",\r\n        \"homework\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a homework\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"assessment\": {\r\n      \"grade_template\": {\r\n        \"approaching\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the approach\\\"}]}]}\"\r\n        },\r\n        \"meeting\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Meeting\\\"}]}]}\"\r\n        },\r\n        \"exceeding\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Exceeding\\\"}]}]}\"\r\n        },\r\n        \"overall\": {\r\n          \"description\": \"\"\r\n        }\r\n      },\r\n      \"check\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{classWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet answered file\\\"}]}]}\",\r\n            \"assetId\": \"{{cwQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{cwQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"1\"\r\n      },\r\n      \"summary\": \"\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"approaching\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is assessment approaching\\\"}]}]}\",\r\n        \"meeting\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Meeting\\\"}]}]}\",\r\n        \"exceeding\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Exceeding\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"references\": [\r\n      \"Ref -1\"\r\n    ],\r\n    \"_id\": \"{{curStageRefId}}\",\r\n    \"assetId\": \"{{coverImageDataId}}\",\r\n    \"brief\": {\r\n      \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the cover image.\\\"}]}]}\",\r\n      \"assetId\": \"{{coverImageDataId}}\"\r\n    },\r\n    \"time\": \"35 mins\",\r\n    \"keywords\": [\r\n      {\r\n        \"_id\": \"{{curStageKeyword}}\",\r\n        \"keyword\": \"This is 1 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 1st keyword definition\\\"}]}]}\"\r\n      },\r\n      {\r\n        \"keyword\": \"This is 2 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 2nd keyword definition\\\"}]}]}\"\r\n      }\r\n    ],\r\n    \"aim\": {\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim Summary\\\"}]}]}\",\r\n      \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim description.\\\"}]}]}\",\r\n      \"resources\": [\r\n        {\r\n          \"_id\": \"{{curStageAimRes}}\",\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Word Book\\\"}]}]}\",\r\n          \"assetId\": \"{{contentBookDataId}}\",\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is resource image\\\"}]}]}\",\r\n            \"assetId\": \"{{contentBookDataId}}\"\r\n          },\r\n          \"assetApproved\": true\r\n        },\r\n        {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet..\\\"}]}]}\",\r\n            \"assetId\": \"{{workSheetDataId}}\"\r\n          },\r\n          \"assetId\": \"{{workSheetDataId}}\",\r\n          \"assetApproved\": true,\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Worksheet\\\"}]}]}\"\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"\"\r\n    },\r\n    \"lp_title\": \"{{jLpName}}\",\r\n    \"lp_description\": \"{{jLpDesc}}\",\r\n    \"assetApproved\": true\r\n  },\r\n  \"equationEditorJsonArray\": []\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: \r\n  {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Author 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Reviewer 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Author 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Editor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Proof Reader",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Published",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.publishProjectLpsToTeacherReadinessApp.triggerStatus).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{cesToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  publishProjectLpsToTeacherReadinessApp(projectId: \"{{jCreatedProjectId}}\") {\r\n    triggerStatus\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
