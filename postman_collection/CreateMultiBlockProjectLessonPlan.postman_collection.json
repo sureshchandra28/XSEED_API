@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "716c8d17-5a4d-42d5-b0fd-cb82e084bb95",
+		"_postman_id": "2e8de289-7098-4ba9-9a9a-ea7cb300f5bd",
 		"name": "Create Multiple Block Project Lesson Plan",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -389,7 +389,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"firstBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
+									"pm.environment.set(\"mFirstBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
 									"postman.setEnvironmentVariable(\"firstBId\",\"TTCBEN\"+Date.now());\r",
 									"pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
 									"//pm.environment.set(\"boardID\", \"74\");\r",
@@ -411,7 +411,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation {\r\n  createBlock(block: {title: \"{{firstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{mFirstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
 								"variables": ""
 							}
 						},
@@ -452,7 +452,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"secondBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
+									"pm.environment.set(\"mSecondBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
 									"postman.setEnvironmentVariable(\"secondBId\",\"TTCBEN\"+Date.now());"
 								],
 								"type": "text/javascript"
@@ -471,7 +471,151 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation {\r\n  createBlock(block: {title: \"{{secondBlockTitle}}\", type: \"standalone\", bId: \"{{secondBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n",
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{mSecondBlockTitle}}\", type: \"standalone\", bId: \"{{secondBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Block Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"// var blockLength=jsonData.data.blockMap.blocks.length;\r",
+									"// pm.environment.set(\"blockSequence1\",(jsonData.data.blockMap.blocks[blockLength-1].displaySequence)+1);\r",
+									"// var num=pm.environment.get(\"blockSequence1\");\r",
+									"// var res=parseInt(num);\r",
+									"// postman.setEnvironmentVariable(\"blockSequence2\", res+1);\r",
+									"// var disSeq;\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"if(jsonData.data.blockMap.blocks[0].displaySequence==(null)){\r",
+									"    console.info(jsonData.data.blockMap.blocks.length+1);\r",
+									"    postman.setEnvironmentVariable(\"blockSequence1\",jsonData.data.blockMap.blocks.length+1);\r",
+									"}\r",
+									"else{\r",
+									"    var j=0;\r",
+									"    for(j=0;j<jsonData.data.blockMap.blocks.length;j++){\r",
+									"    disSeq=jsonData.data.blockMap.blocks[j].displaySequence;\r",
+									"    }\r",
+									"    pm.environment.set(\"blockSequence1\",disSeq+1)   \r",
+									"}\r",
+									"var seq=pm.environment.get(\"blockSequence1\");\r",
+									"postman.setEnvironmentVariable(\"blockSequence2\", parseInt(seq)+1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!)\r\n{\r\n  blockMap(id:$id)\r\n  {\r\n   blocks{\r\n    displaySequence\r\n    \r\n    }\r\n  }\r\n}\r\n  ",
+								"variables": "{\r\n  \"id\": {{blockMapId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "First Link Blocks To Block Map",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\nlinkBlockToBlockMap(data: {blockMapId: {{blockMapId}}, blockId: {{firstBlockId}}, sequence: {{blockSequence1}}, displaySequence: {{blockSequence1}}, quarter: 1}) {\r\n    sequence\r\n    displaySequence\r\n    blockId\r\n    blockMapId\r\n    quarter\r\n  }\r\n}\r\n\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "http",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second Link Blocks To Block Map",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  linkBlockToBlockMap(data: {blockMapId: {{blockMapId}}, blockId: {{secondBlockId}}, sequence: {{blockSequence2}}, displaySequence: {{blockSequence2}}, quarter: 1}) {\r\n    sequence\r\n    displaySequence\r\n    blockId\r\n    blockMapId\r\n    quarter\r\n  }\r\n}",
 								"variables": ""
 							}
 						},
@@ -737,98 +881,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Get Block Sequence",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData=JSON.parse(responseBody);\r",
-									"var blockLength=jsonData.data.blockMap.blocks.length;\r",
-									"pm.environment.set(\"blockSequence1\",(jsonData.data.blockMap.blocks[blockLength-1].displaySequence)+1);\r",
-									"var num=pm.environment.get(\"blockSequence1\");\r",
-									"var res=parseInt(num);\r",
-									"postman.setEnvironmentVariable(\"blockSequence2\", res+1);\r",
-									"\r",
-									"pm.test(\"verify 200 status code\",()=>{\r",
-									"    pm.response.to.be.ok;\r",
-									"    pm.expect(pm.response.code).to.eql(200);\r",
-									"});\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($id:ID!)\r\n{\r\n  blockMap(id:$id)\r\n  {\r\n   blocks{\r\n    displaySequence\r\n    \r\n    }\r\n  }\r\n}\r\n  ",
-								"variables": "{\r\n  \"id\": {{blockMapId}}\r\n}"
-							}
-						},
-						"url": {
-							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
-							"protocol": "http",
-							"host": [
-								"xseed-gateway",
-								"xseeddigital",
-								"info"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Bulk Link Blocks To Block Map",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"verify 200 status code\",()=>{\r",
-									"    pm.response.to.be.ok;\r",
-									"    pm.expect(pm.response.code).to.eql(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation bulkLinkBlocksToBlockMap($data: blockMapBlockInputType) {\r\n  bulkLinkBlocksToBlockMap(data: $data) {\r\n    blockMapBlocks {\r\n      sequence\r\n      quarter\r\n      displaySequence\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n  \"data\": {\r\n    \"blockMapId\": \"{{blockMapId}}\",\r\n    \"blockInput\": [\r\n      {\r\n        \"blockId\": \"{{firstBlockId}}\",\r\n        \"sequence\": {{blockSequence1}},\r\n        \"displaySequence\": {{blockSequence1}},\r\n        \"quarter\": 1\r\n      },\r\n      {\r\n        \"blockId\": \"{{secondBlockId}}\",\r\n        \"sequence\": {{blockSequence2}},\r\n        \"displaySequence\": {{blockSequence2}},\r\n        \"quarter\": 1\r\n      }\r\n    ]\r\n  }\r\n}"
-							}
-						},
-						"url": {
-							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
-							"protocol": "http",
-							"host": [
-								"xseed-gateway",
-								"xseeddigital",
-								"info"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -1025,7 +1077,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"verify First Project Block Title\", () => {\r",
-									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"firstBlockTitle\"));\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"mFirstBlockTitle\"));\r",
 									"});\r",
 									"\r",
 									"pm.test(\"verify First Project Lesson Plan Name\", () => {\r",
@@ -1110,7 +1162,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"verify Second Project Block Title\", () => {\r",
-									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"firstBlockTitle\"));\r",
+									"    pm.expect(jsonData.data.multipleProjects.projects[0].block.title).to.eql(pm.environment.get(\"mFirstBlockTitle\"));\r",
 									"});\r",
 									"\r",
 									"pm.test(\"verify Second Project Lesson Plan Name\", () => {\r",

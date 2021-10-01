@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "566279d7-fa85-4506-b719-0834de87c1a2",
+		"_postman_id": "e2248e97-894d-4898-98fe-ad97e60342f9",
 		"name": "Validate A Project (Standard)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -209,10 +209,10 @@
 									"//         pm.environment.set(\"boardName\", boardList[i].name)\r",
 									"//     }\r",
 									"// }\r",
-									"// pm.test(\"verify 200 status code\",()=>{\r",
-									"//     pm.response.to.be.ok;\r",
-									"//     pm.expect(pm.response.code).to.eql(200);\r",
-									"// });\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
 									" pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
 									" pm.environment.set(\"boardID\", \"74\");"
 								],
@@ -389,8 +389,8 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"firstBlockTitle\",\"MultipleBlockTitle_\"+Date.now());\r",
-									"postman.setEnvironmentVariable(\"firstBId\",\"TTCBEN\"+Date.now());\r",
+									"pm.environment.set(\"vBlockTitle\",\"ValidateProjectBlockTitle_\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"vBId\",\"TTCBEN\"+Date.now());\r",
 									"pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
 									"//pm.environment.set(\"boardID\", \"74\");\r",
 									"pm.environment.set(\"blockMapId\",298);"
@@ -411,7 +411,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation {\r\n  createBlock(block: {title: \"{{firstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{vBlockTitle}}\", type: \"standalone\", bId: \"{{vBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
 								"variables": ""
 							}
 						},
@@ -431,7 +431,69 @@
 					"response": []
 				},
 				{
-					"name": "Bulk Link Blocks To Block Map",
+					"name": "Get Block Sequence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"//postman.setEnvironmentVariable(\"vBlockSeqId\", (jsonData.data.blockMap.blocks.length +1));\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"if(jsonData.data.blockMap.blocks[0].displaySequence==(null)){\r",
+									"    postman.setEnvironmentVariable(\"vBlockSeqId\",jsonData.data.blockMap.blocks.length+1);\r",
+									"}\r",
+									"else{\r",
+									"    var j=0;\r",
+									"    for(j=0;j<jsonData.data.blockMap.blocks.length;j++){\r",
+									"    var disSeq=jsonData.data.blockMap.blocks[j].displaySequence;\r",
+									"    }\r",
+									"    pm.environment.set(\"vBlockSeqId\",disSeq+1);  \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!){\r\n  blockMap(id:$id){\r\n    blocks{\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\":{{blockMapId}}\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Link Blocks To Block Map",
 					"event": [
 						{
 							"listen": "test",
@@ -452,13 +514,13 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation bulkLinkBlocksToBlockMap($data: blockMapBlockInputType) {\r\n  bulkLinkBlocksToBlockMap(data: $data) {\r\n    blockMapBlocks {\r\n      sequence\r\n      quarter\r\n      displaySequence\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n  \"data\": {\r\n    \"blockMapId\": \"{{blockMapId}}\",\r\n    \"blockInput\": [\r\n      {\r\n        \"blockId\": \"{{vBlockId}}\",\r\n        \"sequence\": 2,\r\n        \"displaySequence\": 2,\r\n        \"quarter\": 1\r\n      }\r\n    ]\r\n  }\r\n}"
+								"query": "mutation {\r\n  linkBlockToBlockMap(data: {blockMapId: {{blockMapId}}, blockId: {{vBlockId}}, sequence: {{vBlockSeqId}}, displaySequence: {{vBlockSeqId}}, quarter: 1}) {\r\n    sequence\r\n    displaySequence\r\n    blockId\r\n    blockMapId\r\n    quarter\r\n  }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "http://xseed-gateway.xseeddigital.info/graphql",
-							"protocol": "http",
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
 							"host": [
 								"xseed-gateway",
 								"xseeddigital",
@@ -794,7 +856,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/StudentCoverPhoto.jpg"
+									"src": "StudentCoverPhoto.jpg"
 								}
 							]
 						},
@@ -872,7 +934,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/worksheet1.pdf"
+									"src": "worksheet1.pdf"
 								}
 							]
 						},
@@ -950,7 +1012,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/worksheet1.pdf"
+									"src": "worksheet1.pdf"
 								}
 							]
 						},
@@ -1028,7 +1090,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/firstTitle.jpg"
+									"src": "firstTitle.jpg"
 								}
 							]
 						},
@@ -1106,7 +1168,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/secondTitle.png"
+									"src": "secondTitle.png"
 								}
 							]
 						},
@@ -1184,7 +1246,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/thirdTitle.jpg"
+									"src": "thirdTitle.jpg"
 								}
 							]
 						},
@@ -1262,7 +1324,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/classWork.jpg"
+									"src": "classWork.jpg"
 								}
 							]
 						},
@@ -1340,7 +1402,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/homework.jpg"
+									"src": "homework.jpg"
 								}
 							]
 						},
@@ -1418,7 +1480,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/Question_Answer.jpg"
+									"src": "Question_Answer.jpg"
 								}
 							]
 						},
@@ -1497,7 +1559,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/Question_Answer.jpg"
+									"src": "Question_Answer.jpg"
 								}
 							]
 						},
