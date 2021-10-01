@@ -47,7 +47,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"email\":\"kaushal.mishra+admin@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator1@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -389,7 +389,7 @@
 							"script": {
 								"exec": [
 									"pm.environment.set(\"jBlockTitle\",\"JourneyBlockTitle_\"+Date.now());\r",
-									"postman.setEnvironmentVariable(\"firstBId\",\"TTCBEN\"+Date.now());\r",
+									"postman.setEnvironmentVariable(\"jBId\",\"TTCBEN\"+Date.now());\r",
 									"pm.environment.set(\"boardName\", \"Test XSEED One India\");\r",
 									"//pm.environment.set(\"boardID\", \"74\");\r",
 									"pm.environment.set(\"blockMapId\",\"298\");"
@@ -410,7 +410,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation {\r\n  createBlock(block: {title: \"{{firstBlockTitle}}\", type: \"standalone\", bId: \"{{firstBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+								"query": "mutation {\r\n  createBlock(block: {title: \"{{jBlockTitle}}\", type: \"standalone\", bId: \"{{jBId}}\", skillId: null, subSkillId: null, textId: \"0\", bigIdea: \"\", childrenType: \"LessonPlan\", linkedBlockIds: [], showInXseedOne: true}) {\r\n    id\r\n    title\r\n    bId\r\n    text {\r\n      id\r\n      text\r\n    }\r\n    bigIdea\r\n    type\r\n    skill {\r\n      id\r\n      name\r\n    }\r\n    subSkill {\r\n      id\r\n      name\r\n    }\r\n    linkedBlockIds\r\n    showInXseedOne\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
 								"variables": ""
 							}
 						},
@@ -438,7 +438,18 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
 									"\r",
-									"postman.setEnvironmentVariable(\"jBlockSeqId\", (jsonData.data.blockMap.blocks.length +1));\r",
+									"//postman.setEnvironmentVariable(\"jBlockSeqId\", (jsonData.data.blockMap.blocks.length +1));\r",
+									"if(jsonData.data.blockMap.blocks[0].displaySequence==(null)){\r",
+									"    postman.setEnvironmentVariable(\"jBlockSeqId\",jsonData.data.blockMap.blocks.length+1);\r",
+									"}\r",
+									"else{\r",
+									"    var j=0;\r",
+									"    for(j=0;j<jsonData.data.blockMap.blocks.length;j++){\r",
+									"    var disSeq=jsonData.data.blockMap.blocks[j].displaySequence;\r",
+									"    }\r",
+									"    pm.environment.set(\"jBlockSeqId\",disSeq+1);  \r",
+									"}\r",
+									"\r",
 									"//console.info(jsonData.data.blockMap.blocks.length +1);\r",
 									"\r",
 									"pm.test(\"verify 200 status code\",()=>{\r",
@@ -611,7 +622,7 @@
 							"script": {
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
-									"postman.setEnvironmentVariable(\"jSequenceId\", (jsonData.data.block.lessonPlans.length +1));\r",
+									"postman.setEnvironmentVariable(\"jSequenceId\", (jsonData.data.block.lessonPlans.length));\r",
 									"\r",
 									"pm.test(\"Verify 200 status code\",()=>{\r",
 									"    pm.response.to.be.ok;\r",
@@ -815,7 +826,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation createProject($input: ProjectCreateInputType!) {\r\n  createProject(input: $input) {\r\n    id\r\n    name\r\n    workflowStatus\r\n    product {\r\n      id\r\n      name\r\n    }\r\n    board {\r\n      id\r\n      name\r\n    }\r\n    standard {\r\n      id\r\n      name\r\n      displayName\r\n    }\r\n    subject {\r\n      id\r\n      name\r\n    }\r\n    block {\r\n      id\r\n      bId\r\n      title\r\n      childrenType\r\n    }\r\n    contents {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      template\r\n      currentStage\r\n    }\r\n    dailyPlans {\r\n      id\r\n      library_id\r\n      name\r\n      type\r\n      currentStage\r\n    }\r\n    assignees {\r\n      author {\r\n        id\r\n        name\r\n      }\r\n      reviewer1 {\r\n        id\r\n        name\r\n      }\r\n      reviewer2 {\r\n        id\r\n        name\r\n      }\r\n      academicSignOff {\r\n        id\r\n        name\r\n      }\r\n      editor {\r\n        id\r\n        name\r\n      }\r\n      visualizer {\r\n        id\r\n        name\r\n      }\r\n      assetUploader {\r\n        id\r\n        name\r\n      }\r\n      assetAuthorizer {\r\n        id\r\n        name\r\n      }\r\n      proofReader {\r\n        id\r\n        name\r\n      }\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n  \"input\": {\r\n    \"name\": \"{{jProjectName}}\",\r\n    \"boardId\": {{boardID}},\r\n    \"subjectId\": {{subjectID}},\r\n    \"standardId\": {{standardID}},\r\n    \"productId\": {{productID}},\r\n    \"entityId\": {{jBlockId}},\r\n    \"entityType\": \"Block\",\r\n    \"type\": \"LessonPlan\",\r\n    \"childrenEntityIds\": [\r\n      {{jCreatedLpId}}\r\n    ],\r\n    \"assignees\": {\r\n      \"author\": \"615339ab43a5ff0011f4ed64\",\r\n      \"reviewer1\": \"615339ab43a5ff0011f4ed64\",\r\n      \"reviewer2\": \"skip\",\r\n      \"academicSignOff\": \"skip\",\r\n      \"editor\": \r\n      \"615339ab43a5ff0011f4ed64\",\r\n      \"visualizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetUploader\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetAuthorizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"proofReader\": \"615339ab43a5ff0011f4ed64\"\r\n    }\r\n  }\r\n}"
+								"variables": "{\r\n  \"input\": {\r\n    \"name\": \"{{jProjectName}}\",\r\n    \"boardId\": {{boardID}},\r\n    \"subjectId\": {{subjectID}},\r\n    \"standardId\": {{standardID}},\r\n    \"productId\": {{productID}},\r\n    \"entityId\": {{jBlockId}},\r\n    \"entityType\": \"Block\",\r\n    \"type\": \"LessonPlan\",\r\n    \"childrenEntityIds\": [\r\n      {{jCreatedLpId}}\r\n    ],\r\n    \"assignees\": {\r\n      \"author\": \"615339ab43a5ff0011f4ed64\",\r\n      \"reviewer1\": \"6156be1c025e2f00126b4d5e\",\r\n      \"reviewer2\": \"6156bf1f025e2f00126b4dae\",\r\n      \"academicSignOff\": \"skip\",\r\n      \"editor\": \r\n      \"6156bf7a025e2f00126b4de3\",\r\n      \"visualizer\": \"615339ab43a5ff0011f4ed64\",\r\n      \"assetUploader\": \"6156bf1f025e2f00126b4dae\",\r\n      \"assetAuthorizer\": \"6156be1c025e2f00126b4d5e\",\r\n      \"proofReader\": \"615339ab43a5ff0011f4ed64\"\r\n    }\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -892,7 +903,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/StudentCoverPhoto.jpg"
+									"src": "StudentCoverPhoto.jpg"
 								}
 							]
 						},
@@ -970,7 +981,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/worksheet1.pdf"
+									"src": "worksheet1.pdf"
 								}
 							]
 						},
@@ -1048,7 +1059,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/worksheet1.pdf"
+									"src": "worksheet1.pdf"
 								}
 							]
 						},
@@ -1126,7 +1137,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/firstTitle.jpg"
+									"src": "firstTitle.jpg"
 								}
 							]
 						},
@@ -1204,7 +1215,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/secondTitle.png"
+									"src": "secondTitle.png"
 								}
 							]
 						},
@@ -1282,7 +1293,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/thirdTitle.jpg"
+									"src": "thirdTitle.jpg"
 								}
 							]
 						},
@@ -1360,7 +1371,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/classWork.jpg"
+									"src": "classWork.jpg"
 								}
 							]
 						},
@@ -1438,7 +1449,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/homework.jpg"
+									"src": "homework.jpg"
 								}
 							]
 						},
@@ -1516,7 +1527,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/Question_Answer.jpg"
+									"src": "Question_Answer.jpg"
 								}
 							]
 						},
@@ -1595,7 +1606,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "assets/Question_Answer.jpg"
+									"src": "Question_Answer.jpg"
 								}
 							]
 						},
@@ -1888,7 +1899,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation ($projectId: ID!, $lessonPlanLibraryId: ID!, $data: JSON!, $equationEditorJsonArray: [EquationEditorJsonInput]!) {\r\n  saveProjectLessonPlanStageData(projectId: $projectId, contentLibraryId: $lessonPlanLibraryId, data: $data, equationEditorJsonArray: $equationEditorJsonArray)\r\n}\r\n",
-								"variables": "{\r\n  \"lessonPlanLibraryId\": \"{{jCreatedLpId}}\",\r\n  \"projectId\": \"{{jCreatedProjectId}}\",\r\n  \"data\": {\r\n    \"analysis\": {\r\n      \"activity_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{actDiscExpID}}\",\r\n            \"description\": \"This is 1st Title\",\r\n            \"assetId\": \"{{firstTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is ABCD image\\\"}]}]}\",\r\n              \"assetId\": \"{{firstTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"this is an activity discussion key questions.\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity discussion  key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{ActDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"generalized_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{genDiscExpID}}\",\r\n            \"description\": \"This is the 2nd Title\",\r\n            \"assetId\": \"{{secondTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Reading book image\\\"}]}]}\",\r\n              \"assetId\": \"{{secondTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{genDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized Explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"higher_order_thinking\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiExpID}}\",\r\n            \"description\": \"This is the 3rd Title\",\r\n            \"assetId\": \"{{thirdTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Books images\\\"}]}]}\",\r\n              \"assetId\": \"{{thirdTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking HOTS explanation\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Analysis summary\\\"}]}]}\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\"\r\n    },\r\n    \"action\": {\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Action summary\\\"}]}]}\",\r\n      \"time\": \"15 mins\",\r\n      \"type\": \"\",\r\n      \"instructions\": [\r\n        {\r\n          \"instructionBreak\": false,\r\n          \"_id\": \"{{curStageActIns}}\",\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action step description\\\"}]}]}\",\r\n          \"children\": [],\r\n          \"assets\": []\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action teacher tip description\\\"}]}]}\"\r\n    },\r\n    \"application\": {\r\n      \"classwork\": {\r\n        \"brief\": {\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"A B Word Practices\\\"}]}]}\",\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"type\": \"image\"\r\n        },\r\n        \"description\": \"1\",\r\n        \"assetId\": \"{{classWorkDataID}}\",\r\n        \"assetApproved\": true,\r\n        \"type\": \"image\"\r\n      },\r\n      \"homework\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{homeWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{homeWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Here you can find the homework answered file.\\\"}]}]}\",\r\n            \"assetId\": \"{{hmQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{hmQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"1\"\r\n      },\r\n      \"differentiation_tips\": {\r\n        \"need_more_help\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the AB word Description.\\\"}]}]}\"\r\n        },\r\n        \"need_extra_challenge\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the extra challenge description\\\"}]}]}\"\r\n        }\r\n      },\r\n      \"types\": [\r\n        \"individual\"\r\n      ],\r\n      \"summary\": \"\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\",\r\n      \"more_practice\": [],\r\n      \"more_practice_time\": \"7 mins\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"classwork\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Classwork\\\"}]}]}\",\r\n        \"homework\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a homework\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"assessment\": {\r\n      \"grade_template\": {\r\n        \"approaching\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the approach\\\"}]}]}\"\r\n        },\r\n        \"meeting\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Meeting\\\"}]}]}\"\r\n        },\r\n        \"exceeding\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Exceeding\\\"}]}]}\"\r\n        },\r\n        \"overall\": {\r\n          \"description\": \"\"\r\n        }\r\n      },\r\n      \"check\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{classWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet answered file\\\"}]}]}\",\r\n            \"assetId\": \"{{cwQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{cwQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"1\"\r\n      },\r\n      \"summary\": \"\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"approaching\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is assessment approaching\\\"}]}]}\",\r\n        \"meeting\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Meeting\\\"}]}]}\",\r\n        \"exceeding\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Exceeding\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"references\": [\r\n      \"Ref -1\"\r\n    ],\r\n    \"_id\": \"{{curStageRefId}}\",\r\n    \"assetId\": \"{{coverImageDataId}}\",\r\n    \"brief\": {\r\n      \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the cover image.\\\"}]}]}\",\r\n      \"assetId\": \"{{coverImageDataId}}\"\r\n    },\r\n    \"time\": \"35 mins\",\r\n    \"keywords\": [\r\n      {\r\n        \"_id\": \"{{curStageKeyword}}\",\r\n        \"keyword\": \"This is 1 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 1st keyword definition\\\"}]}]}\"\r\n      },\r\n      {\r\n        \"keyword\": \"This is 2 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 2nd keyword definition\\\"}]}]}\"\r\n      }\r\n    ],\r\n    \"aim\": {\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim Summary\\\"}]}]}\",\r\n      \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim description.\\\"}]}]}\",\r\n      \"resources\": [\r\n        {\r\n          \"_id\": \"{{curStageAimRes}}\",\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Word Book\\\"}]}]}\",\r\n          \"assetId\": \"{{contentBookDataId}}\",\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is resource image\\\"}]}]}\",\r\n            \"assetId\": \"{{contentBookDataId}}\"\r\n          },\r\n          \"assetApproved\": true\r\n        },\r\n        {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet..\\\"}]}]}\",\r\n            \"assetId\": \"{{workSheetDataId}}\"\r\n          },\r\n          \"assetId\": \"{{workSheetDataId}}\",\r\n          \"assetApproved\": true,\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Worksheet\\\"}]}]}\"\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"\"\r\n    },\r\n    \"lp_title\": \"{{jLpName}}\",\r\n    \"lp_description\": \"{{jLpDesc}}\",\r\n    \"assetApproved\": true\r\n  },\r\n  \"equationEditorJsonArray\": []\r\n}"
+								"variables": "{\r\n  \"lessonPlanLibraryId\": \"{{jCreatedLpId}}\",\r\n  \"projectId\": \"{{jCreatedProjectId}}\",\r\n  \"data\": {\r\n    \"analysis\": {\r\n      \"activity_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{actDiscExpID}}\",\r\n            \"description\": \"This is 1st Title\",\r\n            \"assetId\": \"{{firstTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is ABCD image\\\"}]}]}\",\r\n              \"assetId\": \"{{firstTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"this is an activity discussion key questions.\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity discussion  key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{ActDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an activity explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"generalized_discussion\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{genDiscExpID}}\",\r\n            \"description\": \"This is the 2nd Title\",\r\n            \"assetId\": \"{{secondTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Reading book image\\\"}]}]}\",\r\n              \"assetId\": \"{{secondTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized discussion key guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{genDiscInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a  generalized Explanation text box\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"higher_order_thinking\": {\r\n        \"explanations\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiExpID}}\",\r\n            \"description\": \"This is the 3rd Title\",\r\n            \"assetId\": \"{{thirdTitleID}}\",\r\n            \"brief\": {\r\n              \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Books images\\\"}]}]}\",\r\n              \"assetId\": \"{{thirdTitleID}}\"\r\n            },\r\n            \"assetApproved\": true\r\n          }\r\n        ],\r\n        \"key_question\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question\\\"}]}]}\",\r\n        \"key_question_guide\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking key question guide\\\"}]}]}\",\r\n        \"instructions\": [\r\n          {\r\n            \"_id\": \"{{highOrdThiInstID}}\",\r\n            \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a higher order thinking HOTS explanation\\\"}]}]}\"\r\n          }\r\n        ],\r\n        \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the Teacher Tip\\\"}]}]}\",\r\n        \"key_question_assets\": []\r\n      },\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Analysis summary\\\"}]}]}\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\"\r\n    },\r\n    \"action\": {\r\n      \"types\": [\r\n        \"pair\"\r\n      ],\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Action summary\\\"}]}]}\",\r\n      \"time\": \"15 mins\",\r\n      \"type\": \"\",\r\n      \"instructions\": [\r\n        {\r\n          \"instructionBreak\": false,\r\n          \"_id\": \"{{curStageActIns}}\",\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action step description\\\"}]}]}\",\r\n          \"children\": [],\r\n          \"assets\": []\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an action teacher tip description\\\"}]}]}\"\r\n    },\r\n    \"application\": {\r\n      \"classwork\": {\r\n        \"brief\": {\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"A B Word Practices\\\"}]}]}\",\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"type\": \"image\"\r\n        },\r\n        \"description\": \"1\",\r\n        \"assetId\": \"{{classWorkDataID}}\",\r\n        \"assetApproved\": true,\r\n        \"type\": \"image\"\r\n      },\r\n      \"homework\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{homeWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{homeWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Here you can find the homework answered file.\\\"}]}]}\",\r\n            \"assetId\": \"{{hmQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{hmQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is homework description\\\"}]}]}\"\r\n      },\r\n      \"differentiation_tips\": {\r\n        \"need_more_help\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the AB word Description.\\\"}]}]}\"\r\n        },\r\n        \"need_extra_challenge\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the extra challenge description\\\"}]}]}\"\r\n        }\r\n      },\r\n      \"types\": [\r\n        \"individual\"\r\n      ],\r\n      \"summary\": \"\",\r\n      \"time\": \"10 mins\",\r\n      \"type\": \"\",\r\n      \"more_practice\": [],\r\n      \"more_practice_time\": \"7 mins\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"classwork\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a Classwork\\\"}]}]}\",\r\n        \"homework\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is a homework\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"assessment\": {\r\n      \"grade_template\": {\r\n        \"approaching\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the approach\\\"}]}]}\"\r\n        },\r\n        \"meeting\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Meeting\\\"}]}]}\"\r\n        },\r\n        \"exceeding\": {\r\n          \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"For Exceeding\\\"}]}]}\"\r\n        },\r\n        \"overall\": {\r\n          \"description\": \"\"\r\n        }\r\n      },\r\n      \"check\": {\r\n        \"question\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Practice of A B C D word.\\\"}]}]}\",\r\n            \"assetId\": \"{{classWorkDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{classWorkDataID}}\",\r\n          \"assetApproved\": true,\r\n          \"type\": \"image\"\r\n        },\r\n        \"question_answer\": {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet answered file\\\"}]}]}\",\r\n            \"assetId\": \"{{cwQueAnsDataID}}\",\r\n            \"type\": \"image\"\r\n          },\r\n          \"assetId\": \"{{cwQueAnsDataID}}\",\r\n          \"type\": \"image\",\r\n          \"assetApproved\": true\r\n        },\r\n        \"description\": \"1\"\r\n      },\r\n      \"summary\": \"\",\r\n      \"teacher_tip\": \"\",\r\n      \"summaryData\": {\r\n        \"approaching\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is assessment approaching\\\"}]}]}\",\r\n        \"meeting\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Meeting\\\"}]}]}\",\r\n        \"exceeding\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is for Exceeding\\\"}]}]}\"\r\n      }\r\n    },\r\n    \"references\": [\r\n      \"Ref -1\"\r\n    ],\r\n    \"_id\": \"{{curStageRefId}}\",\r\n    \"assetId\": \"{{coverImageDataId}}\",\r\n    \"brief\": {\r\n      \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the cover image.\\\"}]}]}\",\r\n      \"assetId\": \"{{coverImageDataId}}\"\r\n    },\r\n    \"time\": \"35 mins\",\r\n    \"keywords\": [\r\n      {\r\n        \"_id\": \"{{curStageKeyword}}\",\r\n        \"keyword\": \"This is 1 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 1st keyword definition\\\"}]}]}\"\r\n      },\r\n      {\r\n        \"keyword\": \"This is 2 keyword\",\r\n        \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is 2nd keyword definition\\\"}]}]}\"\r\n      }\r\n    ],\r\n    \"aim\": {\r\n      \"summary\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim Summary\\\"}]}]}\",\r\n      \"description\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is an Aim description.\\\"}]}]}\",\r\n      \"resources\": [\r\n        {\r\n          \"_id\": \"{{curStageAimRes}}\",\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Word Book\\\"}]}]}\",\r\n          \"assetId\": \"{{contentBookDataId}}\",\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is resource image\\\"}]}]}\",\r\n            \"assetId\": \"{{contentBookDataId}}\"\r\n          },\r\n          \"assetApproved\": true\r\n        },\r\n        {\r\n          \"brief\": {\r\n            \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"This is the worksheet..\\\"}]}]}\",\r\n            \"assetId\": \"{{workSheetDataId}}\"\r\n          },\r\n          \"assetId\": \"{{workSheetDataId}}\",\r\n          \"assetApproved\": true,\r\n          \"text\": \"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Worksheet\\\"}]}]}\"\r\n        }\r\n      ],\r\n      \"teacher_tip\": \"\"\r\n    },\r\n    \"lp_title\": \"{{jLpName}}\",\r\n    \"lp_description\": \"{{jLpDesc}}\",\r\n    \"assetApproved\": true\r\n  },\r\n  \"equationEditorJsonArray\": []\r\n}"
 							}
 						},
 						"url": {
@@ -1959,7 +1970,7 @@
 					"response": []
 				},
 				{
-					"name": "Move Project From Author 1",
+					"name": "Move Project From Author",
 					"event": [
 						{
 							"listen": "test",
@@ -1974,6 +1985,15 @@
 									"    pm.response.to.be.ok;\r",
 									"    pm.expect(pm.response.code).to.eql(200);\r",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2011,6 +2031,69 @@
 					"response": []
 				},
 				{
+					"name": "First Reviewer Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"firstReviewerToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator3@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Validate The Project",
 					"event": [
 						{
@@ -2036,7 +2119,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{firstReviewerToken}}",
 								"type": "text"
 							}
 						],
@@ -2088,7 +2171,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{firstReviewerToken}}",
 								"type": "text"
 							}
 						],
@@ -2109,6 +2192,69 @@
 							],
 							"path": [
 								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second Reviewer Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"secondReviewerToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator2@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
 							]
 						}
 					},
@@ -2140,7 +2286,174 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{secondReviewerToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  validateProjectLessonPlanStageData(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    status\r\n    errors {\r\n      path\r\n      errorMessage\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Project From Reviewer 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Current Stage \",()=>{\r",
+									"    pm.expect(jsonData.data.moveProjectLessonPlanToNextStage.currentStage).to.eql(\"Done\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{secondReviewerToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  moveProjectLessonPlanToNextStage(projectId: \"{{jCreatedProjectId}}\", contentLibraryId: {{jCreatedLpId}}) {\r\n    currentStage\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Second Author Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"secondAuthorToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate The Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"pm.test(\"Verify Project Validation Status \",()=>{\r",
+									"    pm.expect(jsonData.data.validateProjectLessonPlanStageData.status).to.eql(\"success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{secondAuthorToken}}",
 								"type": "text"
 							}
 						],
@@ -2193,7 +2506,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{secondAuthorToken}}",
 								"type": "text"
 							}
 						],
@@ -2214,6 +2527,69 @@
 							],
 							"path": [
 								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editor Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"editorToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator4@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
 							]
 						}
 					},
@@ -2245,7 +2621,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{editorToken}}",
 								"type": "text"
 							}
 						],
@@ -2298,7 +2674,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{editorToken}}",
 								"type": "text"
 							}
 						],
@@ -2319,6 +2695,69 @@
 							],
 							"path": [
 								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ProofReader Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"proofReaderToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
 							]
 						}
 					},
@@ -2350,7 +2789,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{proofReaderToken}}",
 								"type": "text"
 							}
 						],
@@ -2403,7 +2842,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{cesToken}}",
+								"value": "Bearer {{proofReaderToken}}",
 								"type": "text"
 							}
 						],

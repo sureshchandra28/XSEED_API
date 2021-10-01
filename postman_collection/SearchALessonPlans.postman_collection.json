@@ -1,0 +1,403 @@
+{
+	"info": {
+		"_postman_id": "87fd8ae5-336e-4841-842f-dc2261753d26",
+		"name": "Search A Lesson Plan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login CES",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"cesToken\", jsonData.token);\r",
+									"const responseJSON=pm.response.json();\r",
+									"\r",
+									"pm.test(\"Verifying Login\",()=>{\r",
+									"    pm.expect(responseJSON.message).to.eql(\"Logged in\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "user_platform",
+								"value": "web",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"kaushik.sundar+automator@xseededucation.com\",\r\n\"password\":\"xseed123\",\r\n\"referrer\":\"library.xseeddigital.info\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts-api.xseeddigital.info/api/login",
+							"protocol": "https",
+							"host": [
+								"accounts-api",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lib",
+			"item": [
+				{
+					"name": "Search A Standard Lesson Plans",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].id).to.eql(pm.environment.get(\"createdLpId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].name).to.eql(pm.environment.get(\"lpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].description).to.eql(pm.environment.get(\"desc\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].type).to.eql(\"standard\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Block Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].blockName).to.eql(pm.environment.get(\"stAlBlockTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query lessonPlans($offset: Int!, $limit: Int!, $filter: lessonPlanFilterInputType) {\r\n  lessonPlans(offset: $offset, limit: $limit, filter: $filter) {\r\n    count\r\n    lessonPlans {\r\n      id\r\n      name\r\n      description\r\n      type\r\n      blockName\r\n      bId\r\n      grade\r\n      product\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"offset\": 0,\r\n  \"limit\": 100,\r\n  \"filter\": {\r\n    \"name\": \"{{lpName}}\",\r\n    \"allowedTypes\": [\r\n      \"standard\",\r\n      \"magic\",\r\n      \"mental_math\",\r\n      \"foundation_5a\",\r\n      \"information_and_assessment\",\r\n      \"discussion\",\r\n      \"practice\"\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search A First Lesson Plan from Multiple Lesson",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].id).to.eql(pm.environment.get(\"createdLpIdForIA\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].name).to.eql(pm.environment.get(\"firstLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].description).to.eql(pm.environment.get(\"firstDesc\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].type).to.eql(\"information_and_assessment\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Block Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].blockName).to.eql(pm.environment.get(\"mFirstBlockTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query lessonPlans($offset: Int!, $limit: Int!, $filter: lessonPlanFilterInputType) {\r\n  lessonPlans(offset: $offset, limit: $limit, filter: $filter) {\r\n    count\r\n    lessonPlans {\r\n      id\r\n      name\r\n      description\r\n      type\r\n      blockName\r\n      bId\r\n      grade\r\n      product\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"offset\": 0,\r\n  \"limit\": 100,\r\n  \"filter\": {\r\n    \"name\": \"{{firstLpName}}\",\r\n    \"allowedTypes\": [\r\n      \"standard\",\r\n      \"magic\",\r\n      \"mental_math\",\r\n      \"foundation_5a\",\r\n      \"information_and_assessment\",\r\n      \"discussion\",\r\n      \"practice\"\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search A Second Lesson Plan from Multiple Lesson",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].id).to.eql(pm.environment.get(\"createdLpIdForStand\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].name).to.eql(pm.environment.get(\"secondLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].description).to.eql(pm.environment.get(\"secondDesc\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].type).to.eql(\"standard\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Block Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].blockName).to.eql(pm.environment.get(\"mFirstBlockTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query lessonPlans($offset: Int!, $limit: Int!, $filter: lessonPlanFilterInputType) {\r\n  lessonPlans(offset: $offset, limit: $limit, filter: $filter) {\r\n    count\r\n    lessonPlans {\r\n      id\r\n      name\r\n      description\r\n      type\r\n      blockName\r\n      bId\r\n      grade\r\n      product\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"offset\": 0,\r\n  \"limit\": 100,\r\n  \"filter\": {\r\n    \"name\": \"{{secondLpName}}\",\r\n    \"allowedTypes\": [\r\n      \"standard\",\r\n      \"magic\",\r\n      \"mental_math\",\r\n      \"foundation_5a\",\r\n      \"information_and_assessment\",\r\n      \"discussion\",\r\n      \"practice\"\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search A Lesson Plan from Validate A Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].id).to.eql(pm.environment.get(\"vCreatedLpId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].name).to.eql(pm.environment.get(\"vIALpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].description).to.eql(pm.environment.get(\"vIALpDesc\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].type).to.eql(\"standard\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Block Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].blockName).to.eql(pm.environment.get(\"vBlockTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query lessonPlans($offset: Int!, $limit: Int!, $filter: lessonPlanFilterInputType) {\r\n  lessonPlans(offset: $offset, limit: $limit, filter: $filter) {\r\n    count\r\n    lessonPlans {\r\n      id\r\n      name\r\n      description\r\n      type\r\n      blockName\r\n      bId\r\n      grade\r\n      product\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"offset\": 0,\r\n  \"limit\": 100,\r\n  \"filter\": {\r\n    \"name\": \"{{vIALpName}}\",\r\n    \"allowedTypes\": [\r\n      \"standard\",\r\n      \"magic\",\r\n      \"mental_math\",\r\n      \"foundation_5a\",\r\n      \"information_and_assessment\",\r\n      \"discussion\",\r\n      \"practice\"\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search A Lesson Plan from Journey A Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData=JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify 200 status code\",()=>{\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Id\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].id).to.eql(pm.environment.get(\"jCreatedLpId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].name).to.eql(pm.environment.get(\"jLpName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Description\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].description).to.eql(pm.environment.get(\"jLpDesc\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Lesson Plan Type\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].type).to.eql(\"standard\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Block Name\",()=>{\r",
+									"    pm.expect(jsonData.data.lessonPlans.lessonPlans[0].blockName).to.eql(pm.environment.get(\"jBlockTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query lessonPlans($offset: Int!, $limit: Int!, $filter: lessonPlanFilterInputType) {\r\n  lessonPlans(offset: $offset, limit: $limit, filter: $filter) {\r\n    count\r\n    lessonPlans {\r\n      id\r\n      name\r\n      description\r\n      type\r\n      blockName\r\n      bId\r\n      grade\r\n      product\r\n      displaySequence\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"offset\": 0,\r\n  \"limit\": 100,\r\n  \"filter\": {\r\n    \"name\": \"{{jLpName}}\",\r\n    \"allowedTypes\": [\r\n      \"standard\",\r\n      \"magic\",\r\n      \"mental_math\",\r\n      \"foundation_5a\",\r\n      \"information_and_assessment\",\r\n      \"discussion\",\r\n      \"practice\"\r\n    ]\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://xseed-gateway.xseeddigital.info/graphql",
+							"protocol": "https",
+							"host": [
+								"xseed-gateway",
+								"xseeddigital",
+								"info"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
