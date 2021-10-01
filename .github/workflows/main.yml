@@ -35,10 +35,8 @@ jobs:
       # Uploads report artifacts which can be downloaded post run is complete
       - name: Run XSeed Standard Lesson Plan Collection
         id: runCollection
-        run: |
-          newman run postman_collection/CreateMultiBlockProjectLessonPlan.postman_collection.json -r "htmlextra,cli" --bail
+        run: |  
           newman run postman_collection/ValidateAStandardProject.postman_collection.json -r "htmlextra,cli" --bail
-          newman run postman_collection/JourneyOfAProjectInVariousStages.postman_collection.json -r "htmlextra,cli" --bail
         continue-on-error: true
     
       # Uploads report artifacts which can be downloaded post run is complete
