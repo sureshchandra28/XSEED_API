@@ -36,7 +36,6 @@ jobs:
       - name: Run XSeed Standard Lesson Plan Collection
         id: runCollection
         run: |
-          newman run postman_collection/CreateAStandardLessonPlan.postman_collection.json -r "htmlextra,cli" --bail
           newman run postman_collection/CreateMultiBlockProjectLessonPlan.postman_collection.json -r "htmlextra,cli" --bail
           newman run postman_collection/ValidateAStandardProject.postman_collection.json -r "htmlextra,cli" --bail
         continue-on-error: true
