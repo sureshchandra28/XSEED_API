@@ -892,7 +892,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "StudentCoverPhoto.jpg"
+									"src": "assets/StudentCoverPhoto.jpg"
 								}
 							]
 						},
@@ -970,7 +970,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "worksheet1.pdf"
+									"src": "assets/worksheet1.pdf"
 								}
 							]
 						},
@@ -1048,7 +1048,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "worksheet1.pdf"
+									"src": "assets/worksheet1.pdf"
 								}
 							]
 						},
@@ -1126,7 +1126,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "firstTitle.jpg"
+									"src": "assets/firstTitle.jpg"
 								}
 							]
 						},
@@ -1204,7 +1204,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "secondTitle.png"
+									"src": "assets/secondTitle.png"
 								}
 							]
 						},
@@ -1282,7 +1282,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "thirdTitle.jpg"
+									"src": "assets/thirdTitle.jpg"
 								}
 							]
 						},
@@ -1360,7 +1360,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "classWork.jpg"
+									"src": "assets/classWork.jpg"
 								}
 							]
 						},
@@ -1438,7 +1438,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "homework.jpg"
+									"src": "assets/homework.jpg"
 								}
 							]
 						},
@@ -1516,7 +1516,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "Question_Answer.jpg"
+									"src": "assets/Question_Answer.jpg"
 								}
 							]
 						},
@@ -1595,7 +1595,7 @@
 								{
 									"key": "assets",
 									"type": "file",
-									"src": "Question_Answer.jpg"
+									"src": "assets/Question_Answer.jpg"
 								}
 							]
 						},
